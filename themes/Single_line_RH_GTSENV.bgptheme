@@ -3,9 +3,15 @@ override_git_prompt_colors() {
   GIT_PROMPT_THEME_NAME="Single_line_RH_GTSENV"
   RH_VER="\$(cat /etc/redhat-release | awk '{print \$(NF-1)}')"
   EnvNo="\$(test -f /.envconfig && echo ${GTSENV})"
+  if [ "$(id -u)" != "0" ]; then
+     UserHost_Color="${BoldGreen}"
+  else
+     UserHost_Color="${BoldRed}"
+  fi
 
-  #GIT_PROMPT_START_USER="_LAST_COMMAND_INDICATOR_ ${Red}${RH_VER}${ResetColor} ${Blue}${EnvNo}${ResetColor} ${White}${Time12a}${ResetColor} ${BoldYellow}${PathShort}${ResetColor}"
-  GIT_PROMPT_START_USER="_LAST_COMMAND_INDICATOR_ ${Red}${RH_VER}${ResetColor} ${Blue}${EnvNo}${ResetColor} ${BoldYellow}${PathShort}${ResetColor}"
+
+  GIT_PROMPT_START_USER="_LAST_COMMAND_INDICATOR_ ${Red}${RH_VER}${ResetColor} ${Cyan}${EnvNo}${ResetColor} ${UserHost_Color}$(whoami)@$(hostname -s)${ResetColor} ${BoldYellow}${PathShort}${ResetColor}"
+  #GIT_PROMPT_START_USER="_LAST_COMMAND_INDICATOR_ ${Red}${RH_VER}${ResetColor} ${Blue}${EnvNo}${ResetColor} ${BoldYellow}${PathShort}${ResetColor}"
   GIT_PROMPT_END_USER="${ResetColor} $ "
   GIT_PROMPT_END_ROOT="${BoldRed} # "
 }
